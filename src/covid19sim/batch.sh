@@ -7,7 +7,6 @@ config_dir="configs"
 config_file="transformer_config.yml"
 n_people=1000
 simulation_days=22
-n_jobs=10
 num_seeds=3
 sim_git_hash=$(cd covid_p2p_simulation; git rev-parse HEAD)
 ctt_git_hash=$(cd ctt; git rev-parse HEAD)
@@ -19,7 +18,14 @@ for (( i=0; i<$num_seeds; i++ ))
     mkdir "${root_path}/${batch_path}/${i}"
 
     # Run the simulations
-    python run.py --tune --n_people $n_people --seed $seed --outdir "$root_path/$batch_path/$i" --simulation_days $simulation_days --n_jobs $n_jobs --config $config_dir/$config_file --init_percent_sick 0.002 &
+    python run.py \
+      --tune \
+      --n_people $n_people \
+      --seed $seed \
+      --outdir "$root_path/$batch_path/$i" \
+      --simulation_days $simulation_days \
+      --config $config_dir/$config_file \
+      --init_percent_sick 0.002 &
   done
 
 wait
